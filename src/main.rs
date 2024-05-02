@@ -32,7 +32,7 @@ async fn completeChat(content: String, bot: Bot, state: State, msg: Message) -> 
                 .from()
                 .and_then(|user| Some(user.first_name.clone()))
                 .unwrap_or_default();
-            let systemPrompt: String = AKENO.replace("{}", &userName);
+            let systemPrompt: String = AKENO.replace("[name]", &userName);
             messages.push(
                 ChatCompletionRequestMessageArgs::default()
                     .role(Role::System)
