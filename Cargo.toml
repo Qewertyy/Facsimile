@@ -1,0 +1,19 @@
+[package]
+name = "ai_rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dotenv = "0.15.0"
+futures = "0.3.26"
+log = "0.4.17"
+pretty_env_logger = "0.4.0"
+teloxide = { version = "0.12.2", features = ["macros"] }
+tokio = { version = "1.26.0", features = ["rt-multi-thread", "macros"] }
+thiserror = "1.0.40"
+reqwest = { version = "0.12", features = ["json"] }
+serde_json = "1.0"
+serde = "1.0"
+derive_builder = "0.12.0"
