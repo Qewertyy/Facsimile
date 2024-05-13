@@ -139,6 +139,19 @@ async fn clearHistory(bot: Bot, state: State, msg: Message) -> HandleResult {
 
 async fn handleCommand(bot: Bot, state: State, msg: Message, cmd: Command) -> HandleResult {
     match cmd {
+        Command::Help => {
+            let content = r#"
+/prompt [text] - set system prompt.
+/chat [text] - chat with ai.
+/askgpt [text] - chat with ai.
+/view - view chat histories.
+/clear - clear history chats.
+/source - source.
+"#;
+            bot.send_message(msg.chat.id, content)
+                .reply_to_message_id(msg.id)
+                .await?;
+        }
         Command::Prompt(prompt) => {
             setPrompt(prompt, bot, state, msg).await?;
         }
@@ -153,6 +166,14 @@ async fn handleCommand(bot: Bot, state: State, msg: Message, cmd: Command) -> Ha
         }
         Command::Clear => {
             clearHistory(bot, state, msg).await?;
+        }
+        Command::Reset => {
+            clearHistory(bot, state, msg).await?;
+        }
+        Command::Source => {
+            bot.send_message(msg.chat.id, "https://github.com/Qewertyy/Facsimile")
+                .reply_to_message_id(msg.id)
+                .await?;
         }
     }
     Ok(())
@@ -173,19 +194,6 @@ async fn main() {
             dptree::entry()
                 .filter_command::<Command>()
                 .endpoint(handleCommand),
-        )
-        .branch(
-            dptree::filter_async(move |msg: Message| async move {
-                msg.text().unwrap().to_lowercase().starts_with("akeno")
-            })
-            .endpoint(move |msg: Message, bot: Bot, state| async move {
-                let content = msg.text().unwrap_or_default();
-                if content.is_empty() {
-                    return Ok(());
-                }
-                completeChat(content.to_string(), bot, state, msg).await?;
-                Ok(())
-            }),
         )
         .branch(
             dptree::filter_async(move |msg: Message| async move {

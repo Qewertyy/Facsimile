@@ -12,6 +12,8 @@ pub type HandleResult = Result<(), AppError>;
     description = "These commands are supported:"
 )]
 pub enum Command {
+    #[command(description = "See all available commands")]
+    Help,
     #[command(description = "set system prompt.")]
     Prompt(String),
     #[command(description = "chat with ai.")]
@@ -22,6 +24,10 @@ pub enum Command {
     View,
     #[command(description = "clear history chats.")]
     Clear,
+    #[command(description = "clear history chats.")]
+    Reset,
+    #[command(description = "source.")]
+    Source,
 }
 
 #[derive(thiserror::Error, Debug)]
